@@ -192,9 +192,15 @@
         <div id="historyScreen" class="screen p-6">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">История продаж</h2>
-                <button onclick="exportToCSV()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold">
-                    📥 Экспорт
-                </button>
+                <div class="flex gap-2">
+                    <label class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer">
+                        📤 Импорт
+                        <input type="file" id="importFile" accept=".csv,.xlsx,.xls" class="hidden" onchange="importFromFile(event)">
+                    </label>
+                    <button onclick="exportToCSV()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                        📥 Экспорт
+                    </button>
+                </div>
             </div>
 
             <div class="mb-4 flex gap-2">
@@ -638,6 +644,73 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        // Import from CSV file
+        function importFromFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    const lines = content.split('\n');
+                    
+                    // Skip header row
+                    let importedCount = 0;
+                    
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+                        
+                        // Parse CSV line (handling quoted fields)
+                        const matches = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+                        if (!matches || matches.length < 9) continue;
+                        
+                        // Remove quotes from fields
+                        const fields = matches.map(field => field.replace(/^"|"$/g, '').trim());
+                        
+                        const [date, productName, quantity, price, total, customerName, customerPhone, customerAddress, status] = fields;
+                        
+                        // Create order object
+                        const order = {
+                            id: Date.now() + i, // Unique ID
+                            date: date,
+                            productName: productName,
+                            quantity: parseFloat(quantity) || 0,
+                            price: parseFloat(price) || 0,
+                            total: parseFloat(total) || 0,
+                            customerName: customerName,
+                            customerPhone: customerPhone,
+                            customerAddress: customerAddress,
+                            status: status === 'Исполнен' ? 'completed' : 'new'
+                        };
+                        
+                        // Add to orders
+                        orders.unshift(order);
+                        importedCount++;
+                    }
+                    
+                    if (importedCount > 0) {
+                        localStorage.setItem('orders', JSON.stringify(orders));
+                        renderOrders();
+                        updateStats();
+                        alert(`✓ Успешно импортировано ${importedCount} заказов!`);
+                    } else {
+                        alert('❌ Не удалось импортировать заказы. Проверьте формат файла.');
+                    }
+                    
+                } catch (error) {
+                    alert('❌ Ошибка при импорте файла: ' + error.message);
+                }
+                
+                // Reset file input
+                event.target.value = '';
+            };
+            
+            reader.readAsText(file, 'UTF-8');
         }
 
         // Initialize on load
