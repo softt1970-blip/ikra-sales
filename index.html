@@ -2,41 +2,256 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#020817">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Красная Икра">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
     <title>Красная Икра - Продажи</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        :root {
+            color-scheme: dark;
+            --app-bg: #020817;
+            --panel-bg: #0f172a;
+            --panel-2: #111827;
+            --panel-3: #1e293b;
+            --card-bg: #111827;
+            --surface: #0b1120;
+            --line: #334155;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #f43f5e;
+            --brand: #2563eb;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
         }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            min-height: 100%;
+            background: var(--app-bg);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: var(--text);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top, rgba(59, 130, 246, 0.2), transparent 35%),
+                linear-gradient(180deg, #020817 0%, #0f172a 100%);
+        }
+
         .screen {
             display: none;
         }
+
         .screen.active {
             display: block;
         }
+
         .completed-order {
-            background-color: #d1fae5;
+            background-color: rgba(34, 197, 94, 0.16);
+            border-color: rgba(34, 197, 94, 0.5);
         }
+
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
+
         .btn-primary:hover {
             opacity: 0.9;
         }
+
+        button,
+        input,
+        select,
+        textarea {
+            min-height: 48px;
+        }
+
+        .app-shell {
+            max-width: 100%;
+            min-height: 100vh;
+            background: rgba(15, 23, 42, 0.94);
+            box-shadow: none;
+            border-left: 1px solid rgba(148, 163, 184, 0.2);
+            border-right: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        body.dark-mode .bg-white,
+        body.dark-mode .bg-gray-50,
+        body.dark-mode .bg-gray-200,
+        body.dark-mode .bg-gray-300,
+        body.dark-mode .bg-blue-50,
+        body.dark-mode .bg-gray-100 {
+            background-color: var(--panel-bg) !important;
+        }
+
+        body.dark-mode .bg-gray-50 {
+            background-color: #0b1220 !important;
+        }
+
+        body.dark-mode .text-gray-800,
+        body.dark-mode .text-gray-700,
+        body.dark-mode .text-gray-600,
+        body.dark-mode .text-gray-500,
+        body.dark-mode .text-gray-400,
+        body.dark-mode .text-blue-900 {
+            color: var(--text) !important;
+        }
+
+        body.dark-mode .text-gray-600,
+        body.dark-mode .text-gray-500,
+        body.dark-mode .text-gray-400 {
+            color: var(--muted) !important;
+        }
+
+        body.dark-mode .border-gray-200,
+        body.dark-mode .border-gray-300,
+        body.dark-mode .border-blue-200,
+        body.dark-mode .divide-gray-200 {
+            border-color: var(--line) !important;
+        }
+
+        body.dark-mode .divide-gray-200 > * {
+            border-color: var(--line) !important;
+        }
+
+        body.dark-mode input,
+        body.dark-mode select,
+        body.dark-mode textarea {
+            background-color: var(--surface) !important;
+            color: var(--text) !important;
+            border-color: var(--line) !important;
+        }
+
+        body.dark-mode input::placeholder,
+        body.dark-mode textarea::placeholder {
+            color: var(--muted) !important;
+        }
+
+        body.dark-mode .bg-gradient-to-r.from-red-600.to-red-700,
+        body.dark-mode header {
+            background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%) !important;
+        }
+
+        .install-btn {
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(15, 23, 42, 0.3);
+            color: white;
+            padding: 0.5rem 0.8rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .install-btn.visible {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.dark-mode .bg-red-600 {            background-color: #dc2626 !important;
+        }
+
+        body.dark-mode .bg-blue-500,
+        body.dark-mode .bg-blue-600 {
+            background-color: #2563eb !important;
+        }
+
+        body.dark-mode .bg-green-500,
+        body.dark-mode .bg-green-600 {
+            background-color: #16a34a !important;
+        }
+
+        body.dark-mode .bg-purple-500,
+        body.dark-mode .bg-purple-600 {
+            background-color: #7c3aed !important;
+        }
+
+        body.dark-mode .bg-orange-500,
+        body.dark-mode .bg-orange-600 {
+            background-color: #f59e0b !important;
+        }
+
+        body.dark-mode .bg-yellow-400,
+        body.dark-mode .bg-yellow-500,
+        body.dark-mode .bg-yellow-600 {
+            background-color: #d97706 !important;
+        }
+
+        body.dark-mode .bg-red-500,
+        body.dark-mode .bg-red-600 {
+            background-color: #dc2626 !important;
+        }
+
+        body.dark-mode .text-red-600 {
+            color: #fca5a5 !important;
+        }
+
+        body.dark-mode .bg-blue-50 {
+            background: rgba(37, 99, 235, 0.14) !important;
+        }
+
+        body.dark-mode .border-blue-200 {
+            border-color: rgba(96, 165, 250, 0.5) !important;
+        }
+
+        @media (max-width: 640px) {
+            .app-shell {
+                width: 100%;
+                max-width: 100%;
+                min-height: 100vh;
+                border-left: none;
+                border-right: none;
+            }
+
+            .p-6 {
+                padding: 1rem !important;
+            }
+
+            .text-3xl {
+                font-size: 2rem !important;
+            }
+
+            .text-2xl {
+                font-size: 1.5rem !important;
+            }
+
+            .text-xl {
+                font-size: 1.15rem !important;
+            }
+
+            button {
+                border-radius: 14px !important;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-50">
-    <div class="max-w-2xl mx-auto min-h-screen bg-white shadow-lg">
+<body class="bg-gray-50 dark-mode">
+    <div class="app-shell max-w-2xl mx-auto shadow-lg">
         <!-- Header -->
         <header class="bg-gradient-to-r from-red-600 to-red-700 text-white p-4 sticky top-0 z-50 shadow-md">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between gap-3">
                 <h1 class="text-xl font-bold">🐟 Красная Икра</h1>
-                <button id="homeBtn" class="text-white hover:text-gray-200">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                    </svg>
-                </button>
+                <div class="flex items-center gap-2">
+                    <button id="installBtn" class="install-btn" type="button">Установить</button>
+                    <button id="homeBtn" class="text-white hover:text-gray-200" type="button" aria-label="Главная">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -45,6 +260,11 @@
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold text-gray-800 mb-2">Добро пожаловать!</h2>
                 <p class="text-gray-600">Система управления продажами икры</p>
+            </div>
+
+            <div class="mb-6 rounded-xl border border-blue-500/30 bg-blue-500/10 p-3">
+                <p class="text-sm font-semibold mb-1">Android</p>
+                <p class="text-sm text-gray-600">Откройте страницу в Chrome → ⋮ → «Добавить на главный экран».</p>
             </div>
             
             <div class="grid grid-cols-1 gap-4">
@@ -262,8 +482,7 @@
     </div>
 
     <script>
-        // Data structure - Load from localStorage or use defaults
-        let products = JSON.parse(localStorage.getItem('products')) || [
+        const defaultProducts = [
             { id: 1, name: 'Икра горбуши', price: 3500 },
             { id: 2, name: 'Икра нерки', price: 4200 },
             { id: 3, name: 'Икра кеты', price: 4000 },
@@ -271,17 +490,148 @@
             { id: 5, name: 'Икра кижуча', price: 4500 }
         ];
 
-        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        function readStorageArray(key, fallback) {
+            try {
+                const rawValue = localStorage.getItem(key);
+                if (!rawValue) return fallback;
+                const parsedValue = JSON.parse(rawValue);
+                return Array.isArray(parsedValue) ? parsedValue : fallback;
+            } catch (error) {
+                console.warn(`Failed to parse ${key} from localStorage:`, error);
+                return fallback;
+            }
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[char]));
+        }
+
+        function formatMoney(value) {
+            return Number(value || 0).toLocaleString('ru-RU') + ' ₽';
+        }
+
+        function escapeCsv(value) {
+            return '"' + String(value ?? '').replace(/"/g, '""') + '"';
+        }
+
+        function saveStorage(key, value) {
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+            } catch (error) {
+                console.warn(`Failed to save ${key} to localStorage:`, error);
+            }
+        }
+
+        function normalizeProduct(product) {
+            return {
+                id: Number(product.id) || Date.now() + Math.random(),
+                name: String(product.name || 'Без названия'),
+                price: Number(product.price) || 0
+            };
+        }
+
+        function normalizeOrder(order) {
+            return {
+                ...order,
+                id: Number(order.id) || Date.now() + Math.random(),
+                total: Number(order.total) || 0,
+                quantity: Number(order.quantity) || 0,
+                price: Number(order.price) || 0,
+                status: order.status === 'completed' ? 'completed' : 'new',
+                customerName: String(order.customerName || ''),
+                customerPhone: String(order.customerPhone || ''),
+                customerAddress: String(order.customerAddress || ''),
+                productName: String(order.productName || ''),
+                items: Array.isArray(order.items) ? order.items.map(item => ({
+                    productId: Number(item.productId),
+                    productName: String(item.productName || ''),
+                    quantity: Number(item.quantity) || 0,
+                    price: Number(item.price) || 0,
+                    total: Number(item.total) || 0
+                })) : []
+            };
+        }
+
+        function getOrderTotal(items) {
+            return (items || []).reduce((sum, item) => sum + Number(item.total || 0), 0);
+        }
+
+        function getOrderQuantity(items) {
+            return (items || []).reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+        }
+
+        let products = readStorageArray('products', defaultProducts).map(normalizeProduct);
+
+        let orders = readStorageArray('orders', []).map(normalizeOrder);
+
         let currentFilter = 'all';
         let currentOrderItems = []; // Временное хранилище товаров в текущем заказе
+        let deferredInstallPrompt = null;
+
+        function registerServiceWorker() {
+            if (!('serviceWorker' in navigator)) return;
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js').catch((error) => {
+                    console.warn('Service worker registration failed:', error);
+                });
+            });
+        }
+
+        function setupInstallPrompt() {
+            const installBtn = document.getElementById('installBtn');
+            if (!installBtn) return;
+
+            const showInstallButton = () => {
+                installBtn.classList.add('visible');
+            };
+
+            const hideInstallButton = () => {
+                installBtn.classList.remove('visible');
+            };
+
+            window.addEventListener('beforeinstallprompt', (event) => {
+                event.preventDefault();
+                deferredInstallPrompt = event;
+                showInstallButton();
+            });
+
+            installBtn.addEventListener('click', async () => {
+                if (!deferredInstallPrompt) {
+                    alert('На Android откройте сайт в Chrome и выберите “Добавить на главный экран”.');
+                    return;
+                }
+
+                deferredInstallPrompt.prompt();
+                const choice = await deferredInstallPrompt.userChoice;
+                if (choice.outcome === 'accepted') {
+                    alert('Приложение добавлено на главный экран.');
+                }
+                deferredInstallPrompt = null;
+                hideInstallButton();
+            });
+
+            window.addEventListener('appinstalled', () => {
+                hideInstallButton();
+            });
+        }
 
         // Initialize app
         function init() {
             renderPriceList();
             renderProductSelect();
+            renderFilterButtons();
             renderOrders();
             updateStats();
+            updateOrderTotal();
             setupEventListeners();
+            setupInstallPrompt();
+            registerServiceWorker();
         }
 
         // Setup event listeners
@@ -306,13 +656,22 @@
             }
         }
 
+        function calculateTotal() {
+            const productId = Number(document.getElementById('productSelect').value);
+            const quantity = Number(document.getElementById('quantityInput').value);
+            const product = products.find(item => item.id === productId);
+            const previewTotal = product && Number.isFinite(quantity) && quantity > 0 ? product.price * quantity : 0;
+            const total = getOrderTotal(currentOrderItems) + previewTotal;
+            document.getElementById('totalAmount').textContent = total.toLocaleString('ru-RU');
+        }
+
         // Render price list
         function renderPriceList() {
             const tbody = document.getElementById('priceTableBody');
             tbody.innerHTML = products.map(product => `
                 <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3 font-semibold text-gray-800">${product.name}</td>
-                    <td class="px-4 py-3 text-right font-bold text-red-600">${product.price.toLocaleString()} ₽</td>
+                    <td class="px-4 py-3 font-semibold text-gray-800">${escapeHtml(product.name)}</td>
+                    <td class="px-4 py-3 text-right font-bold text-red-600">${formatMoney(product.price)}</td>
                     <td class="px-4 py-3 text-center">
                         <button onclick="editPrice(${product.id})" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm font-semibold">
                             ✎
@@ -327,58 +686,75 @@
             const product = products.find(p => p.id === productId);
             if (!product) return;
             
-            const newPrice = prompt(`Введите новую цену для "${product.name}" (текущая цена: ${product.price} ₽):`, product.price);
+            const promptText = `Введите новую цену для "${product.name}" (текущая цена: ${product.price} ₽):`;
+            const newPrice = prompt(promptText, product.price);
             
             if (newPrice === null) return; // User cancelled
             
-            const parsedPrice = parseInt(newPrice);
+            const parsedPrice = Number(newPrice);
             
-            if (isNaN(parsedPrice) || parsedPrice <= 0) {
+            if (!Number.isFinite(parsedPrice) || parsedPrice <= 0) {
                 alert('❌ Пожалуйста, введите корректную цену (положительное число)');
                 return;
             }
             
             product.price = parsedPrice;
-            localStorage.setItem('products', JSON.stringify(products));
+            saveStorage('products', products);
             
             renderPriceList();
             renderProductSelect();
+            calculateTotal();
             
-            alert(`✓ Цена для "${product.name}" обновлена: ${parsedPrice.toLocaleString()} ₽`);
+            alert(`✓ Цена для "${product.name}" обновлена: ${parsedPrice.toLocaleString('ru-RU')} ₽`);
         }
 
         // Render product select
         function renderProductSelect() {
             const select = document.getElementById('productSelect');
-            // Clear existing options except the first one
             while (select.options.length > 1) {
                 select.remove(1);
             }
-            // Add product options
+
+            if (products.length === 0) {
+                select.value = '';
+                return;
+            }
+
             products.forEach(product => {
                 const option = document.createElement('option');
-                option.value = product.id;
-                option.textContent = `${product.name} - ${product.price.toLocaleString()} ₽/кг`;
+                option.value = String(product.id);
+                option.textContent = `${product.name} - ${product.price.toLocaleString('ru-RU')} ₽/кг`;
                 select.appendChild(option);
             });
         }
 
+        function renderFilterButtons() {
+            document.getElementById('filterAll').className = 'flex-1 px-4 py-2 rounded-lg font-semibold text-sm ' + (currentFilter === 'all' ? 'bg-purple-500 text-white' : 'bg-gray-200 hover:bg-gray-300');
+            document.getElementById('filterNew').className = 'flex-1 px-4 py-2 rounded-lg font-semibold text-sm ' + (currentFilter === 'new' ? 'bg-purple-500 text-white' : 'bg-gray-200 hover:bg-gray-300');
+            document.getElementById('filterCompleted').className = 'flex-1 px-4 py-2 rounded-lg font-semibold text-sm ' + (currentFilter === 'completed' ? 'bg-purple-500 text-white' : 'bg-gray-200 hover:bg-gray-300');
+        }
+
         // Add item to current order
         function addItemToOrder() {
-            const productId = parseInt(document.getElementById('productSelect').value);
-            const quantity = parseFloat(document.getElementById('quantityInput').value);
+            const productId = Number(document.getElementById('productSelect').value);
+            const quantity = Number(document.getElementById('quantityInput').value);
             
             if (!productId) {
                 alert('Пожалуйста, выберите товар');
                 return;
             }
             
-            if (!quantity || quantity <= 0) {
+            if (!Number.isFinite(quantity) || quantity <= 0) {
                 alert('Пожалуйста, введите количество');
                 return;
             }
             
             const product = products.find(p => p.id === productId);
+            if (!product) {
+                alert('Товар не найден');
+                return;
+            }
+
             const itemTotal = product.price * quantity;
             
             currentOrderItems.push({
@@ -413,8 +789,8 @@
                         ${currentOrderItems.map((item, index) => `
                             <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                                 <div class="flex-1">
-                                    <p class="font-semibold text-gray-800">${item.productName}</p>
-                                    <p class="text-sm text-gray-600">${item.quantity} кг × ${item.price.toLocaleString()} ₽ = ${item.total.toLocaleString()} ₽</p>
+                                    <p class="font-semibold text-gray-800">${escapeHtml(item.productName)}</p>
+                                    <p class="text-sm text-gray-600">${Number(item.quantity).toLocaleString('ru-RU')} кг × ${Number(item.price).toLocaleString('ru-RU')} ₽ = ${Number(item.total).toLocaleString('ru-RU')} ₽</p>
                                 </div>
                                 <button onclick="removeOrderItem(${index})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm font-semibold ml-3">
                                     ✕
@@ -435,8 +811,8 @@
         
         // Update order total
         function updateOrderTotal() {
-            const total = currentOrderItems.reduce((sum, item) => sum + item.total, 0);
-            document.getElementById('totalAmount').textContent = total.toLocaleString();
+            const total = getOrderTotal(currentOrderItems);
+            document.getElementById('totalAmount').textContent = total.toLocaleString('ru-RU');
         }
 
         // Handle order submit
@@ -448,34 +824,37 @@
                 return;
             }
             
-            const customerName = document.getElementById('customerNameInput').value;
-            const customerPhone = document.getElementById('customerPhoneInput').value;
-            const customerAddress = document.getElementById('customerAddressInput').value;
+            const customerName = document.getElementById('customerNameInput').value.trim();
+            const customerPhone = document.getElementById('customerPhoneInput').value.trim();
+            const customerAddress = document.getElementById('customerAddressInput').value.trim();
             
-            const orderTotal = currentOrderItems.reduce((sum, item) => sum + item.total, 0);
+            if (!customerName) {
+                alert('❌ Пожалуйста, укажите имя клиента');
+                return;
+            }
             
-            // Создаем описание товаров для заказа
-            const productNames = currentOrderItems.map(item => `${item.productName} (${item.quantity} кг)`).join(', ');
-            const totalQuantity = currentOrderItems.reduce((sum, item) => sum + item.quantity, 0);
+            const orderTotal = getOrderTotal(currentOrderItems);
+            const totalQuantity = getOrderQuantity(currentOrderItems);
+            const productNames = currentOrderItems
+                .map(item => `${item.productName} (${Number(item.quantity).toLocaleString('ru-RU')} кг)`)
+                .join(', ');
             
-            // Создаем один заказ с несколькими товарами
-            const order = {
+            const order = normalizeOrder({
                 id: Date.now(),
                 date: new Date().toLocaleString('ru-RU'),
                 productName: productNames,
-                items: currentOrderItems, // Сохраняем массив товаров
+                items: currentOrderItems.map(item => ({ ...item })),
                 quantity: totalQuantity,
                 total: orderTotal,
                 customerName: customerName,
                 customerPhone: customerPhone,
                 customerAddress: customerAddress,
                 status: 'new'
-            };
+            });
             
             orders.unshift(order);
-            localStorage.setItem('orders', JSON.stringify(orders));
+            saveStorage('orders', orders);
             
-            // Reset everything
             currentOrderItems = [];
             document.getElementById('orderForm').reset();
             document.getElementById('totalAmount').textContent = '0';
@@ -490,7 +869,7 @@
             const order = orders.find(o => o.id === orderId);
             if (order) {
                 order.status = order.status === 'new' ? 'completed' : 'new';
-                localStorage.setItem('orders', JSON.stringify(orders));
+                saveStorage('orders', orders);
                 renderOrders();
                 updateStats();
             }
@@ -500,7 +879,7 @@
         function deleteOrder(orderId) {
             if (confirm('Удалить этот заказ?')) {
                 orders = orders.filter(o => o.id !== orderId);
-                localStorage.setItem('orders', JSON.stringify(orders));
+                saveStorage('orders', orders);
                 renderOrders();
                 updateStats();
             }
@@ -509,12 +888,7 @@
         // Filter orders
         function filterOrders(filter) {
             currentFilter = filter;
-            
-            // Update button styles
-            document.getElementById('filterAll').className = 'flex-1 px-4 py-2 rounded-lg font-semibold text-sm ' + (filter === 'all' ? 'bg-purple-500 text-white' : 'bg-gray-200 hover:bg-gray-300');
-            document.getElementById('filterNew').className = 'flex-1 px-4 py-2 rounded-lg font-semibold text-sm ' + (filter === 'new' ? 'bg-purple-500 text-white' : 'bg-gray-200 hover:bg-gray-300');
-            document.getElementById('filterCompleted').className = 'flex-1 px-4 py-2 rounded-lg font-semibold text-sm ' + (filter === 'completed' ? 'bg-purple-500 text-white' : 'bg-gray-200 hover:bg-gray-300');
-            
+            renderFilterButtons();
             renderOrders();
         }
 
@@ -522,11 +896,10 @@
         function renderOrders() {
             const ordersList = document.getElementById('ordersList');
             
-            // Calculate total of completed orders
             const completedTotal = orders
                 .filter(o => o.status === 'completed')
-                .reduce((sum, order) => sum + order.total, 0);
-            document.getElementById('completedOrdersTotal').textContent = completedTotal.toLocaleString() + ' ₽';
+                .reduce((sum, order) => sum + Number(order.total || 0), 0);
+            document.getElementById('completedOrdersTotal').textContent = completedTotal.toLocaleString('ru-RU') + ' ₽';
             
             let filteredOrders = orders;
             if (currentFilter === 'new') {
@@ -540,48 +913,56 @@
                 return;
             }
             
-            ordersList.innerHTML = filteredOrders.map(order => `
-                <div class="border rounded-lg p-4 ${order.status === 'completed' ? 'completed-order border-green-400' : 'bg-white border-gray-200'} shadow-sm">
-                    <div class="flex justify-between items-start mb-3">
-                        <div>
-                            <h3 class="font-bold text-lg text-gray-800">${order.productName}</h3>
-                            <p class="text-sm text-gray-600">${order.date}</p>
+            ordersList.innerHTML = filteredOrders.map(order => {
+                const productName = escapeHtml(order.productName || 'Без названия');
+                const customerName = escapeHtml(order.customerName || '');
+                const customerPhone = escapeHtml(order.customerPhone || '');
+                const customerAddress = escapeHtml(order.customerAddress || '');
+                const totalQuantity = Number(order.quantity || 0).toLocaleString('ru-RU');
+                const totalPrice = Number(order.total || 0).toLocaleString('ru-RU');
+
+                return `
+                    <div class="border rounded-lg p-4 ${order.status === 'completed' ? 'completed-order border-green-400' : 'bg-white border-gray-200'} shadow-sm">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-800">${productName}</h3>
+                                <p class="text-sm text-gray-600">${escapeHtml(order.date || '')}</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold ${order.status === 'completed' ? 'bg-green-500 text-white' : 'bg-yellow-400 text-gray-800'}">
+                                ${order.status === 'completed' ? '✓ Исполнен' : '⏱ Новый'}
+                            </span>
                         </div>
-                        <span class="px-3 py-1 rounded-full text-xs font-bold ${order.status === 'completed' ? 'bg-green-500 text-white' : 'bg-yellow-400 text-gray-800'}">
-                            ${order.status === 'completed' ? '✓ Исполнен' : '⏱ Новый'}
-                        </span>
+                        
+                        <div class="space-y-1 text-sm mb-3">
+                            <p><span class="font-semibold">Клиент:</span> ${customerName}</p>
+                            <p><span class="font-semibold">Телефон:</span> ${customerPhone || '—'}</p>
+                            <p><span class="font-semibold">Адрес:</span> ${customerAddress || '—'}</p>
+                            <p><span class="font-semibold">Количество:</span> ${totalQuantity} кг</p>
+                            <p class="text-lg font-bold text-red-600">Сумма: ${totalPrice} ₽</p>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <button onclick="toggleOrderStatus(${order.id})" class="flex-1 ${order.status === 'completed' ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-green-500 hover:bg-green-600'} text-white py-2 px-4 rounded-lg text-sm font-semibold">
+                                ${order.status === 'completed' ? 'Вернуть в новые' : 'Отметить исполненным'}
+                            </button>
+                            <button onclick="deleteOrder(${order.id})" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-sm font-semibold">
+                                🗑
+                            </button>
+                        </div>
                     </div>
-                    
-                    <div class="space-y-1 text-sm mb-3">
-                        <p><span class="font-semibold">Клиент:</span> ${order.customerName}</p>
-                        <p><span class="font-semibold">Телефон:</span> ${order.customerPhone}</p>
-                        <p><span class="font-semibold">Адрес:</span> ${order.customerAddress}</p>
-                        <p><span class="font-semibold">Количество:</span> ${order.quantity} кг</p>
-                        <p class="text-lg font-bold text-red-600">Сумма: ${order.total.toLocaleString()} ₽</p>
-                    </div>
-                    
-                    <div class="flex gap-2">
-                        <button onclick="toggleOrderStatus(${order.id})" class="flex-1 ${order.status === 'completed' ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-green-500 hover:bg-green-600'} text-white py-2 px-4 rounded-lg text-sm font-semibold">
-                            ${order.status === 'completed' ? 'Вернуть в новые' : 'Отметить исполненным'}
-                        </button>
-                        <button onclick="deleteOrder(${order.id})" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg text-sm font-semibold">
-                            🗑
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // Update statistics
         function updateStats() {
-            const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+            const totalRevenue = orders.reduce((sum, order) => sum + Number(order.total || 0), 0);
             const completedOrdersCount = orders.filter(o => o.status === 'completed').length;
             
-            document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString() + ' ₽';
+            document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString('ru-RU') + ' ₽';
             document.getElementById('totalOrders').textContent = orders.length;
             document.getElementById('completedOrders').textContent = completedOrdersCount;
             
-            // Product statistics
             const productStatsDiv = document.getElementById('productStats');
             const productStats = {};
             
@@ -594,28 +975,26 @@
             });
             
             orders.forEach(order => {
-                // Проверяем, есть ли массив items (новый формат с несколькими товарами)
                 if (order.items && Array.isArray(order.items)) {
                     order.items.forEach(item => {
                         if (productStats[item.productId]) {
-                            productStats[item.productId].quantity += item.quantity;
-                            productStats[item.productId].revenue += item.total;
+                            productStats[item.productId].quantity += Number(item.quantity || 0);
+                            productStats[item.productId].revenue += Number(item.total || 0);
                         }
                     });
                 } else if (order.productId && productStats[order.productId]) {
-                    // Старый формат с одним товаром
-                    productStats[order.productId].quantity += order.quantity;
-                    productStats[order.productId].revenue += order.total;
+                    productStats[order.productId].quantity += Number(order.quantity || 0);
+                    productStats[order.productId].revenue += Number(order.total || 0);
                 }
             });
             
             productStatsDiv.innerHTML = Object.values(productStats).map(stat => `
                 <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                     <div>
-                        <p class="font-semibold text-gray-800">${stat.name}</p>
-                        <p class="text-sm text-gray-600">${stat.quantity.toFixed(1)} кг</p>
+                        <p class="font-semibold text-gray-800">${escapeHtml(stat.name)}</p>
+                        <p class="text-sm text-gray-600">${Number(stat.quantity || 0).toLocaleString('ru-RU', { maximumFractionDigits: 1 })} кг</p>
                     </div>
-                    <p class="font-bold text-red-600">${stat.revenue.toLocaleString()} ₽</p>
+                    <p class="font-bold text-red-600">${Number(stat.revenue || 0).toLocaleString('ru-RU')} ₽</p>
                 </div>
             `).join('');
         }
@@ -630,7 +1009,19 @@
             let csv = 'Дата,Товар,Количество (кг),Цена за кг,Сумма,Клиент,Телефон,Адрес,Статус\n';
             
             orders.forEach(order => {
-                csv += `"${order.date}","${order.productName}",${order.quantity},${order.price},${order.total},"${order.customerName}","${order.customerPhone}","${order.customerAddress}","${order.status === 'completed' ? 'Исполнен' : 'Новый'}"\n`;
+                const line = [
+                    order.date || '',
+                    order.productName || '',
+                    Number(order.quantity || 0),
+                    Number(order.price || 0),
+                    Number(order.total || 0),
+                    order.customerName || '',
+                    order.customerPhone || '',
+                    order.customerAddress || '',
+                    order.status === 'completed' ? 'Исполнен' : 'Новый'
+                ].map(value => escapeCsv(value));
+
+                csv += line.join(',') + '\n';
             });
             
             const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
@@ -694,7 +1085,7 @@
                     }
                     
                     if (importedCount > 0) {
-                        localStorage.setItem('orders', JSON.stringify(orders));
+                        saveStorage('orders', orders);
                         renderOrders();
                         updateStats();
                         alert(`✓ Успешно импортировано ${importedCount} заказов!`);
@@ -718,4 +1109,3 @@
     </script>
 </body>
 </html>
-<!-- Тестовое изменение -->).
